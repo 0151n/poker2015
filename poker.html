@@ -1,5 +1,6 @@
  <html>
  <body>
+ <h1>Poker Game</h1>
  <script>
 
  var deckSize = 52;
@@ -12,7 +13,7 @@
  var suits = new Array();
  var values = new Array();
 
- for(var n=0; n < deckSize; n++){
+for(var n=0; n < deckSize; n++){
 if(n < 13)  {
          suits[n]= 0;
      }
@@ -25,10 +26,11 @@ if(n < 13)  {
     else {
         suits[n]= 3;
     }
+  /////////////////
   values[n] = (cards[n]) % 13;
-
+///////////////////////
   //document.write(values[n] + " " + suits[n] + "<br />");
-
+/*
 
 switch(values[n])  
       {
@@ -54,10 +56,16 @@ switch(values[n])
         case 3:  document.write( "Diamonds");   break;
       }
  document.write("<br />");
+ */
 }
+//var rand = Math.floor( Math.random() * 52);
+//document.write(rand);
 
-
-
+var hand = new Array();
+for(var m=0; m < 5; m++){
+ 	hand[m]= Math.floor( Math.random() * 52);
+ 	document.write(hand[m] + "<br />");
+ } 
  </script>
  </body>
  </html>
