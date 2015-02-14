@@ -28,11 +28,24 @@ if(n < 13)  {
     }
   /////////////////
   values[n] = (cards[n]) % 13;
-///////////////////////
-  //document.write(values[n] + " " + suits[n] + "<br />");
-/*
+}
+var hand = new Array();
 
-switch(values[n])  
+for(var i =0; i < handsize; i++){
+  hand[i] = Math.floor( Math.random() * 52);
+
+
+      for (var j = 0; j < i; j++) {
+        if (hand[i] == hand[j]){
+          while (hand[i] == hand[j]){
+       
+            hand[i] = Math.floor( Math.random() * 52);
+            
+          }
+        }
+      }
+      
+switch(values[hand[i]])  
       {
         case 0:  document.write("Two of ");   break;
         case 1:  document.write("Three of "); break;
@@ -48,7 +61,7 @@ switch(values[n])
         case 11: document.write( "King of ");  break;
         case 12: document.write( "Ace of ");   break;
       }
-      switch(suits[n])
+      switch(suits[hand[i]])
       {
         case 0:  document.write( "Hearts");    break;
         case 1:  document.write( "Clubs"); break;
@@ -56,16 +69,9 @@ switch(values[n])
         case 3:  document.write( "Diamonds");   break;
       }
  document.write("<br />");
- */
+  
 }
-//var rand = Math.floor( Math.random() * 52);
-//document.write(rand);
-
-var hand = new Array();
-for(var m=0; m < 5; m++){
- 	hand[m]= Math.floor( Math.random() * 52);
- 	document.write(hand[m] + "<br />");
- } 
+  
  </script>
  </body>
  </html>
