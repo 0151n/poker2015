@@ -3,6 +3,8 @@
 DECKSIZE = 52
 HANDSIZE = 5
 
+deck_range = Range.new(0,DECKSIZE - 1)
+
 #names of values
 value_names = ["Two of",
 	       "Three of",
@@ -22,22 +24,45 @@ suit_names = ["Hearts","Clubs","Spades","Diamonds"]
 
 
 #define card array
-cards = (0..51).to_a
+cards = (deck_range).to_a
 
 #suits and values arrays
 suits = Array.new()
 values = Array.new()
 
-for i in 0..51
+#defining sorting algorithm
+def bubble_sort(input)
+	if(input.class == Array) then
+		#sort array
+		changed = true
+		while changed == true do 
+			changed = false
+			for i in 1 ... input.size()
+				if input[i] % 13 < input[i - 1] % 13 then
+					temp = input[i]
+					input[i] = input[i -1]
+					input[i - 1] = temp
+					changed = true
+				end 	
+			end 
+		end
+	else
+		#not an array
+		puts("data sent to bubble_sort function not an array")
+	end
+end
+
+
+for i in deck_range
 	#sort cards into suits
 	case i
-		when 0..12
+		when 0...13
 			suits[i] = 0
-		when 13..25
+		when 13...26
 			suits[i] = 1
-		when 26..38
+		when 26...39
 			suits[i] = 2
-		when 39..51
+		when 39...52
 			suits[i] = 3
 	end
 
@@ -51,14 +76,15 @@ for i in 1..HANDSIZE
 	#loop until number that is not
 	#in hand is found
 	#generate number between 0 and 51
-	temp = rand(0..51)
+	temp = rand(deck_range)
 	while(hand.include?(temp)) do	
-		temp = rand(0..51)
+		temp = rand(deck_range)
 	end
 	#push temp onto hand	
 	hand << temp
 end
 #print to screen
-for i in 0..4
+for i in 0...HANDSIZE
+	bubble_sort(hand)
 	puts("#{value_names[values[hand[i]]]} #{suit_names[suits[hand[i]]]}\n")
 end
