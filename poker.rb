@@ -59,3 +59,5 @@ player.sort()
 for i in 0...HANDSIZE
 	puts("#{value_names[values[player.hand[i]]]} #{suit_names[suits[player.hand[i]]]}\n")
 end
+player.get_rank()
+puts(player.rank)
