@@ -24,8 +24,16 @@ value_names = ["Two of",
 	       "Ace of"]
 #names of suits
 suit_names = ["Hearts","Clubs","Spades","Diamonds"]
-
-
+ranks = ["Royal Flush",
+		 "Straight Flush",
+		 "Four of a Kind",
+		 "Full House",
+		 "Flush",
+		 "Straight",
+		 "Three of a Kind",
+		 "Two Pairs",
+		 "One Pair",
+		 "High Card"]
 #define card array
 cards = (deck_range).to_a
 
@@ -53,11 +61,14 @@ end
 #create player
 player = Player.new("player")
 player.populate([],52,5)
-player.sort()
+player.sort(player.hand)
 
 #print to screen
 for i in 0...HANDSIZE
 	puts("#{value_names[values[player.hand[i]]]} #{suit_names[suits[player.hand[i]]]}\n")
 end
+puts("--------------------")
 player.get_rank()
-puts(player.rank)
+for i in Range.new(0,player.ranks.length - 1)
+	puts("#{ranks[player.ranks[i]]}|#{player.subranks[i]}\n")
+end

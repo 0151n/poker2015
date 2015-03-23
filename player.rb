@@ -1,30 +1,37 @@
 #player class
 class Player
+	#attribute accessors
+	attr_reader :hand
+	attr_reader :name
+	attr_reader :ranks
+	attr_reader :subranks
+	#constructor
 	def initialize(name)
 		#initialize varaibles
 		@name = name
 		@hand = Array.new()	
 		@handsize = 0
-		@subrank = 0
-		@rank = ""
+		@subranks = []
+		@ranks = []
 	end
-	def sort()
+	#sorting function
+	def sort(input)
 		#sort hand
 		changed = true
 		while changed == true do 
 			changed = false
-			for i in 1 ... @hand.size()
-				if @hand[i] % 13 < @hand[i - 1] % 13 then
-					temp = @hand[i]
-					@hand[i] = @hand[i -1]
-					@hand[i - 1] = temp
+			for i in 1 ... input.size()
+				if input[i] % 13 < input[i - 1] % 13 then
+					temp = input[i]
+					input[i] = input[i -1]
+					input[i - 1] = temp
 					changed = true
 				end 	
 			end 
 		end
 	end
+	#populate hand with cards
 	def populate(used,decksize,handsize)
-		#populate hand
 		@handsize = handsize
 		for i in 1..handsize
 			#loop until number that is not
@@ -36,15 +43,15 @@ class Player
 			end
 			#push temp onto hand	
 			@hand << temp
-	
+			sort(@hand)	
 		end
 	end
+	#rank hand
 	def get_rank()
 		#variables
 		pair = false
 		same = false
-		same_ = false
-		royal = false
+		same_ = true
 		usedindex = 0
 		subranking = 0
 		if @handsize == 0 then
@@ -54,96 +61,81 @@ class Player
 		#straight
 		same = true
 		for i in 0 ... (@handsize - 1) 
-			if (@hand[i] % 13) == (@hand[i+1] % 13 + 1) and same == true then
+			if (@hand[i + 1] % 13) == (@hand[i] % 13) + 1 and same == true then
 				#do nothing
 			else
 				same = false
 			end
 		end
 		if same == true then 
-			@rank = "Straight"
-			if @hand[0] % 13 > @hand[@handsize - 1] % 13 then
-				@subrank = @hand[0]
-			else
-				@subrank = hand[@handsize - 1]
-			end
-			
+				@ranks << 5
+				@subranks << @hand[@handsize - 1] % 13		
 		end
 		
-		#straigh-flush
+		#straight-flush
 		for i in 0 ... @handsize
-			if @hand[0] / 13 != hand[i] / 13 then
+			if @hand[0] / 13 != @hand[i] / 13 then
 				same_ = false
 			end
 		end
 		if same and same_ then
-			@rank = "Straight Flush"
-			return 1
-		elsif same and not same_ then
-			return 1
+			@ranks << 1
 		end
 		#Full House
 		for i in 2 .. 4
-			if (hand[i] % 13) == (hand[i-1] % 13) and (hand[i] % 13) == (hand[i-2] % 13) then
+			if (@hand[i] % 13) == (@hand[i-1] % 13) and (@hand[i] % 13) == (@hand[i-2] % 13) then
 				if i == 2 then
-					if(hand[i + 1] % 13) == (hand[i + 2] % 13) then
-						@subrank = (hand[0] % 13) + (hand[3] % 13);
-						@rank =  "Full House"
-						return 1
+					if(@hand[i + 1] % 13) == (@hand[i + 2] % 13) then
+						@subranks = (@hand[0] % 13) + (@hand[3] % 13);
+						@ranks <<  3
+						break
 					end
 				elsif i == 4 then
-					if((hand[i - 3] % 13) == (hand[i - 4 ] % 13)) then
-						@subrank = (hand[0] % 13) + (hand[4] % 13);
-						@rank =  "Full House"
-						return 1
+					if((@hand[i - 3] % 13) == (@hand[i - 4 ] % 13)) then
+						@subranks << (@hand[0] % 13) + (@hand[4] % 13);
+						@ranks <<  3
+						break
 					end
 				end
 			end
 		end
 		#royal flush
-		if (hand[0] / 13) == (hand[1] / 13) and (hand[0] / 13) == (hand[2] / 13) and (hand[0] / 13) == (hand[3] / 13) and (hand[0] / 13) == (hand[4] / 13) then
-			for i in 0 .. 4
-				if (hand[i] % 13) >= 10 and (hand[i] % 13) <= 12 then
-					royal = true
-				else
-					royal = false
-				end
-			end
-			if royal then
-				@rank = "Royal Flush"
-				return 1
+		if (@hand[0] / 13) == (@hand[1] / 13) and (@hand[0] / 13) == (@hand[2] / 13) and (@hand[0] / 13) == (@hand[3] / 13) and (@hand[0] / 13) == (@hand[4] / 13) then
+			if (@hand[0] % 13 == 8) and (@hand[1] % 13 == 9) and (@hand[2] % 13 == 10) and (@hand[3] % 13 == 11) and (@hand[4] % 13 == 12) then
+				@ranks << 0
 			end
 		end
-		
 		#Flush
-		if(hand[0] / 13) == (hand[1] / 13) and (hand[0] / 13) == (hand[2] / 13) and (hand[0] / 13) == (hand[3] / 13) and (hand[0] / 13) == (hand[4] / 13) then
-			@subrank = hand[0] % 13;
-			@rank = "Flush"
-			return 1
+		if(@hand[0] / 13) == (@hand[1] / 13) and (@hand[0] / 13) == (@hand[2] / 13) and (@hand[0] / 13) == (@hand[3] / 13) and (@hand[0] / 13) == (@hand[4] / 13) then
+			@subranks << @hand[0] % 13;
+			@ranks << 4
 		end
 		#four of a kind
 		for i in 3 .. 4
-			if(hand[i] % 13) == (hand[i-1] % 13) and (hand[i] % 13) == (hand[i-2] % 13) and (hand[i] % 13) == (hand[i-3] % 13) then
-				@subrank = hand[i] % 13
-				@rank = "Four of a Kind"
-				return 1
+			if(@hand[i] % 13) == (@hand[i-1] % 13) and (@hand[i] % 13) == (@hand[i-2] % 13) and (@hand[i] % 13) == (@hand[i-3] % 13) then
+				@subranks << @hand[i] % 13
+				@ranks << 2
 			end
 		end
 		#three of a kind
 		for i in  2 .. 4
-			if (hand[i] % 13) == (hand[i-1] % 13) and (hand[i] % 13) == (hand[i-2] % 13) then
-				@subrank = hand[i] % 13
-				@rank =  "Three of a Kind"
-				return 1
+			if (@hand[i] % 13) == (@hand[i-1] % 13) and (@hand[i] % 13) == (@hand[i-2] % 13) then
+				@subranks << @hand[i] % 13
+				@ranks <<  6
+				break
 			end
 		end
 		#two pairs
 		for i in 1 .. 4	
-			if(hand[i] % 13) == (hand[i-1] % 13) && usedindex != i then
+			if(@hand[i] % 13) == (@hand[i-1] % 13) && usedindex != i then
 				if(pair) then
-					@subrank = (hand[usedindex] % 13) + (hand[i] % 13)
-					@rank =  "Two Pairs"
-					return 1			
+					if @hand[usedindex] % 13 > @hand[i] % 13 then
+						@subrank << @hand[userindex] % 13 	
+					else
+						@subrank << @hand[i] % 13
+					end
+					@ranks << 7
+					break		
 				else
 					usedindex = i
 					pair = true
@@ -152,22 +144,15 @@ class Player
 		end
 		#pair
 		if pair == true then
-			@subrank = hand[usedindex] % 13
-			@rank = "Pair"
-			return 1
+			@subranks << @hand[usedindex] % 13
+			@ranks << 8
 		end
 		#high card
-		@rank = "High Card"
-		@subrank = hand[4]
+		@ranks << 9
+		@subranks << @hand[4]
 	end
 	#hand setter method
 	def set_hand(in_hand)
 		@hand = in_hand
 	end
-
-	#attribute accessors
-	attr_reader :hand
-	attr_reader :name
-	attr_reader :rank
-	attr_reader :subrank
 end
