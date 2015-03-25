@@ -1,5 +1,6 @@
 #poker game ruby implementation
 #load player class
+load "sort.rb"
 load "player.rb"
 
 #define constants
@@ -61,7 +62,7 @@ end
 #create player
 player = Player.new("player")
 player.populate([],52,5)
-player.sort(player.hand)
+sort(player.hand)
 
 #print to screen
 for i in 0...HANDSIZE

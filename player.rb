@@ -1,3 +1,4 @@
+load 'sort.rb'
 #player class
 class Player
 	#attribute accessors
@@ -13,22 +14,6 @@ class Player
 		@handsize = 0
 		@subranks = []
 		@ranks = []
-	end
-	#sorting function
-	def sort(input)
-		#sort hand
-		changed = true
-		while changed == true do 
-			changed = false
-			for i in 1 ... input.size()
-				if input[i] % 13 < input[i - 1] % 13 then
-					temp = input[i]
-					input[i] = input[i -1]
-					input[i - 1] = temp
-					changed = true
-				end 	
-			end 
-		end
 	end
 	#populate hand with cards
 	def populate(used,decksize,handsize)
@@ -150,6 +135,9 @@ class Player
 		#high card
 		@ranks << 9
 		@subranks << @hand[4]
+		
+		sort(@ranks)
+		sort(@subranks)
 	end
 	#hand setter method
 	def set_hand(in_hand)
