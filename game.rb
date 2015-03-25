@@ -122,6 +122,15 @@ class Game
 			sort(@smax_subs)
 			return @max_refs[@max_subs.index(@smax_subs.last)]	
 		end
+	end
+	def print_players()
+		for i in 0...@num_players
+			puts ("-player #{i}-")
+			for j in 0...5
+				puts("#{@value_names[@values[@players[i].hand[j]]]} #{@suit_names[@suits[@players[i].hand[j]]]}")
+			end
+			puts ("-----------")
+		end
 	end	
 end
 

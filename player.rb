@@ -115,9 +115,9 @@ class Player
 			if(@hand[i] % 13) == (@hand[i-1] % 13) && usedindex != i then
 				if(pair) then
 					if @hand[usedindex] % 13 > @hand[i] % 13 then
-						@subrank << @hand[userindex] % 13 	
+						@subranks << @hand[userindex] % 13 	
 					else
-						@subrank << @hand[i] % 13
+						@subranks << @hand[i] % 13
 					end
 					@ranks << 7
 					break		
