@@ -19,7 +19,9 @@ class Game
 		#define players array		
 		@players = Array.new(num_players)
 		@num_players = num_players
-
+		for i in @players
+			i = Player.new("#{i}")
+		end
 		#names of values
 		@value_names = ["Two of",
 			        "Three of",
@@ -93,36 +95,83 @@ class Game
 		end
 		@round += 1 
 	end
-	def compare_players()
-		@f_ranks = []
+
+	def compare_players(ex_group, resolution)	
+		#rank arrays
+		@f_ranks= []
 		@f_subranks = []
+
+		#populate rank arrays
 		for i in 0...@num_players
-			@f_ranks << @players[i].ranks[0]
-			@f_subranks << @players[i].subranks[0]
+			#check that rank is not nil
+			if @players[i].ranks[resolution] == nil or !ex_group[i] or @players[i].folded then
+				#set f_rank element to a non-rank value so that it is discarded
+				@f_ranks << 10
+				@f_subranks << 10
+			else
+				@f_ranks << @players[i].ranks[resolution]
+				@f_subranks << @players[i].subranks[resolution]
+			end
 		end
+
+		#copy and sort sf_ranks from f_ranks
 		@sf_ranks = @f_ranks[0..@f_ranks.length()]
 		sort(@sf_ranks)
+
+		#get max rank value from sf_ranks
 		@max = @sf_ranks[0]
+
+		#initialize max_refs array
 		@max_refs = []
+
+		#check for high card draw
+		if(@max == 10) then
+			return -1
+		end
+
+		#populate max_refs with
 		for i in 0...@num_players
 			if @f_ranks[i] == @max then
 				@max_refs << i
 			end
 		end
+		#return winning player if only one had the maximum rank
 		if @max_refs.length() == 1 then
 			return @max_refs[0]
+		#check subrank if two players have the same rank
 		else
+			#initialize arrays
 			@smax_subs = []
 			@max_subs = []
-			@sf_subranks = @f_subranks[0..@f_subranks.length()]
+			#generate max_subs
 			for i in 0...@max_refs.length()
 				@max_subs << @f_subranks[@max_refs[i]]
 			end
+			#copy and sort smax_subs
 			@smax_subs = @max_subs[0..@max_subs.length()]
 			sort(@smax_subs)
-			return @max_refs[@max_subs.index(@smax_subs.last)]	
+			#initialize subrank match array
+			@smatch = []
+			for i in 0...@max_subs.length()
+				if @max_subs[i] == @smax_subs.last then
+					@smatch << @max_refs[i]
+				end
+			end
+			if @smatch.length() == 1 then
+				#return winner
+				return @max_refs[@max_subs.index(@smax_subs.last)]
+			else
+				#create and populate exclusion array
+				@exclude = Array.new(@num_players,false)
+				for i in 0...@smatch.length()
+					@exclude[i] == true
+				end
+				#call self to check next level of ranks
+				return compare_players(@exclude, resolution + 1)	
+			end
 		end
 	end
+
 	def print_players()
 		for i in 0...@num_players
 			puts ("-player #{i}-")

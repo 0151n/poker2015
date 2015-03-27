@@ -6,6 +6,7 @@ class Player
 	attr_reader :name
 	attr_reader :ranks
 	attr_reader :subranks
+	attr_reader :folded
 	#constructor
 	def initialize(name)
 		#initialize varaibles
@@ -14,6 +15,7 @@ class Player
 		@handsize = 0
 		@subranks = []
 		@ranks = []
+		@folded = false
 	end
 	#populate hand with cards
 	def populate(used,decksize,handsize)
