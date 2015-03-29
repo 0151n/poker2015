@@ -1,5 +1,5 @@
 #game class
-#dependecies:
+#dependencies
 #player class
 load 'player.rb'
 
@@ -19,9 +19,6 @@ class Game
 		#define players array		
 		@players = Array.new(num_players)
 		@num_players = num_players
-		for i in @players
-			i = Player.new("#{i}")
-		end
 		#names of values
 		@value_names = ["Two of",
 			        "Three of",
@@ -82,7 +79,7 @@ class Game
 		end
 		@used = []
 		for i in 0...num_players
-			@players[i] = Player.new("blank")
+			@players[i] = Player.new("#{i}")
 		end
 	end
 	#round
@@ -180,6 +177,14 @@ class Game
 			end
 			puts ("-----------")
 		end
-	end	
+	end
+	def print_outcome()
+		@outcome = compare_players(Array.new(5,true),0)
+		if @outcome == -1 then
+			puts ("Game was a tie")
+		else
+			puts ("Player #{@players[@outcome].name} won")
+		end
+	end
 end
 
