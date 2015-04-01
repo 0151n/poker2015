@@ -169,13 +169,17 @@ class Game
 		end
 	end
 
+	def print_player(player)
+		puts ("-player #{player}-")
+		for j in 0...5
+			puts("#{@value_names[@values[@players[player].hand[j]]]} #{@suit_names[@suits[@players[player].hand[j]]]}")
+		end
+		puts ("-----------")
+	end
+
 	def print_players()
 		for i in 0...@num_players
-			puts ("-player #{i}-")
-			for j in 0...5
-				puts("#{@value_names[@values[@players[i].hand[j]]]} #{@suit_names[@suits[@players[i].hand[j]]]}")
-			end
-			puts ("-----------")
+			print_player(i)
 		end
 	end
 	def print_outcome()
