@@ -12,16 +12,17 @@ Shoes.app(title: "Poker Game",
 					subtitle "             "
 					flow(top: 12) do
 						caption "Bank:"
-						para "$1000", :top => 14
+						@playerbank = para "$1000", :top => 14
 					end
-					para "rank"
+					@playerrank = para "rank"
 				end
-				flow(top:80, left:3) do	
-					image "images/0.png"
-					image "images/1.png"
-					image "images/2.png"
-					image "images/3.png"
-					image "images/4.png"
+				flow(top:80, left:3) do
+					@playerimages = Array.new()	
+					@playerimages[0] = image "images/0.png"
+					@playerimages[1] = image "images/1.png"
+					@playerimages[2] = image "images/2.png"
+					@playerimages[3] = image "images/3.png"
+					@playerimages[4] = image "images/4.png"
 				end
 			end
 			stack(height:300) do
@@ -29,14 +30,14 @@ Shoes.app(title: "Poker Game",
 					border("#0F0",strokewidth:2)
 					flow do
 						caption "Total Bets:"
-						caption "$100"
+						@totalbets = caption "$100"
 					end		
 					flow do
 						caption "Round Winner:"
-						caption "Player"
+						@winner = caption "Player"
 						caption "      "
 						caption "round no."
-						caption "10"
+						@rounds = caption "10"
 					end
 				end
 				stack(height:160) do
@@ -46,45 +47,46 @@ Shoes.app(title: "Poker Game",
 							border("#0FF",strokewidth:2)
 							flow do
 								caption "Player Bet:"
-								caption "$20"
+								@playerbet = caption "$20"
 							end
 							flow do
 								caption " add to bet: "
-								edit_line :width => 80
+								@bet_add = edit_line :width => 80
 							end
 							flow(margin:25) do
-								button "call"
+								@call = button "call"
 								caption "  "
-								button "fold"
+								@fold = button "fold"
 							end
 						end
 						stack(width:200) do
+							@computersbets = Array.new()
 							stack(height:40) do
 								border("#FF0",strokewidth:2)
 								flow do
 									para "Computer 1 Bet:"
-									para "$10"
+									@computersbets[0] = para "$10"
 								end
 							end
 							stack(height:40) do
 								border("#FF0",strokewidth:2)
 								flow do
 									para "Computer 2 Bet:"
-									para "$10"
+									@computersbets[1] = para "$10"
 								end
 							end
 							stack(height:40) do
 								border("#FF0",strokewidth:2)
 								flow do
 									para "Computer 3 Bet:"
-									para "$10"
+									@computersbets[2] = para "$10"
 								end
 							end
 							stack(height:40) do
 								border("#FF0",strokewidth:2)
 								flow do
 									para "Computer 4 Bet:"
-									para "$10"
+									@computersbets[3] = para "$10"
 								end
 							end
 						end 
@@ -93,22 +95,26 @@ Shoes.app(title: "Poker Game",
 			end
 		end
 		stack(width: 400) do
+			@computerimages = Array.new()
+			@computerbanks = Array.new()
+			@computerranks = Array.new()
 			stack(height: 150) do
 				border("#F00",strokewidth:1)
 				flow(left: 100) do
 					para "Computer 1", :align => left
 					para "             "
 					para "Bank:"
-					para "$1000"
+					@computerbanks[0] = para "$1000"
 					para "     "
-					para "rank"
+					@computerranks[0] = para "rank"
 				end	
 				flow(top:22, left:left_offset) do
-					image "images/0.png"
-					image "images/1.png"
-					image "images/2.png"
-					image "images/3.png"
-					image "images/4.png"
+					@computerimages[0] = Array.new()
+					@computerimages[0][0] = image "images/0.png"
+					@computerimages[0][1] = image "images/1.png"
+					@computerimages[0][2] = image "images/2.png"
+					@computerimages[0][3] = image "images/3.png"
+					@computerimages[0][4] = image "images/4.png"
 				end
 			end
 			stack(height: 150) do
@@ -117,17 +123,18 @@ Shoes.app(title: "Poker Game",
 					para "Computer 2", :align => left
 					para "             "
 					para "Bank:"
-					para "$1000"
+					@computerbanks[1] = para "$1000"
 					para "     "
-					para "rank"
+					@computerranks[1] = para "rank"
 
 				end	
 				flow(top:22, left:left_offset) do
-					image "images/0.png"
-					image "images/1.png"
-					image "images/2.png"
-					image "images/3.png"
-					image "images/4.png"
+					@computerimages[1] = Array.new()
+					@computerimages[1][0] = image "images/0.png"
+					@computerimages[1][1] = image "images/1.png"
+					@computerimages[1][2] = image "images/2.png"
+					@computerimages[1][3] = image "images/3.png"
+					@computerimages[1][4] = image "images/4.png"
 				end
 			end
 			stack(height: 150) do
@@ -136,17 +143,18 @@ Shoes.app(title: "Poker Game",
 					para "Computer 3", :align => left
 					para "             "
 					para "Bank:"
-					para "$1000"
+					@computerbanks[2] = para "$1000"
 					para "     "
-					para "rank"
+					@computerranks[2] = para "rank"
 
 				end	
 				flow(top:22, left:0) do
-					image "images/0.png"
-					image "images/1.png"
-					image "images/2.png"
-					image "images/3.png"
-					image "images/4.png"
+					@computerimages[2] = Array.new()
+					@computerimages[2][0] = image "images/0.png"
+					@computerimages[2][1] = image "images/1.png"
+					@computerimages[2][2] = image "images/2.png"
+					@computerimages[2][3] = image "images/3.png"
+					@computerimages[2][4] = image "images/4.png"
 				end
 			end
 			stack(height: 150) do
@@ -155,18 +163,20 @@ Shoes.app(title: "Poker Game",
 					para "Computer 4", :align => left
 					para "             "
 					para "Bank:"
-					para "$1000"
+					@computerbanks[3] = para "$1000"
 					para "     "
-					para "rank"	
+					@computerranks[3] = para "rank"	
 				end	
 				flow(top:22, left:left_offset) do
-					image "images/0.png"
-					image "images/1.png"
-					image "images/2.png"
-					image "images/3.png"
-					image "images/4.png"
+					@computerimages[3] = Array.new()
+					@computerimages[3][0] = image "images/0.png"
+					@computerimages[3][1] = image "images/1.png"
+					@computerimages[3][2] = image "images/2.png"
+					@computerimages[3][3] = image "images/3.png"
+					@computerimages[3][4] = image "images/4.png"
 				end
 			end
 		end
 	end
-end 
+end
+ 
