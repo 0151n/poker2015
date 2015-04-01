@@ -1,11 +1,22 @@
 load 'game.rb'
 left_offset = 2
 
-game = Game.new(5)
-game.round()
-playerimage_paths = game.players[0].hand[0..4]
-
-Shoes.app(title: "Poker Game",
+$game = Game.new(5)
+$game.round()
+playerimage_paths = $game.players[0].hand[0..4]
+def show_all(images,ranks)
+	#images
+	for i in 0..3
+		for j in 0..4
+			images[i][j].path = "images/#{$game.players[i + 1].hand[j]}.png"
+		end
+	end
+	#ranks
+	for i in 0..3
+		ranks[i].text =  $game.ranks[$game.players[i + 1].ranks[0]]
+	end	
+end
+Shoes.app(title: "Poker game",
    width: 800, height: 600, resizable: false) do
 	background "#FFF"
 	flow do
@@ -19,15 +30,15 @@ Shoes.app(title: "Poker Game",
 						caption "Bank:"
 						@playerbank = para "$1000", :top => 14
 					end
-					@playerrank = para "rank"
+					@playerrank = para $game.ranks[$game.players[0].ranks[0]]
 				end
 				flow(top:80, left:3) do
 					@playerimages = Array.new()	
-					@playerimages[0] = image "images/#{game.players[0].hand[0]}.png" 
-					@playerimages[1] = image "images/#{game.players[0].hand[1]}.png"
-					@playerimages[2] = image "images/#{game.players[0].hand[2]}.png" 
-					@playerimages[3] = image "images/#{game.players[0].hand[3]}.png" 
-					@playerimages[4] = image "images/#{game.players[0].hand[4]}.png" 
+					@playerimages[0] = image "images/#{$game.players[0].hand[0]}.png" 
+					@playerimages[1] = image "images/#{$game.players[0].hand[1]}.png"
+					@playerimages[2] = image "images/#{$game.players[0].hand[2]}.png" 
+					@playerimages[3] = image "images/#{$game.players[0].hand[3]}.png" 
+					@playerimages[4] = image "images/#{$game.players[0].hand[4]}.png" 
 				end
 			end
 			stack(height:300) do
@@ -59,7 +70,9 @@ Shoes.app(title: "Poker Game",
 								@bet_add = edit_line :width => 80
 							end
 							flow(margin:25) do
-								@call = button "call"
+								@call = button "call" do
+									show_all(@computerimages,@computerranks)
+								end
 								caption "  "
 								@fold = button "fold"
 							end
@@ -111,15 +124,15 @@ Shoes.app(title: "Poker Game",
 					para "Bank:"
 					@computerbanks[0] = para "$1000"
 					para "     "
-					@computerranks[0] = para "rank"
+					@computerranks[0] = para "-----"
 				end	
 				flow(top:22, left:left_offset) do
 					@computerimages[0] = Array.new()
-					@computerimages[0][0] = image "images/#{game.players[1].hand[0]}.png"
-					@computerimages[0][1] = image "images/#{game.players[1].hand[1]}.png"
-					@computerimages[0][2] = image "images/#{game.players[1].hand[2]}.png"
-					@computerimages[0][3] = image "images/#{game.players[1].hand[3]}.png"
-					@computerimages[0][4] = image "images/#{game.players[1].hand[4]}.png"
+					@computerimages[0][0] = image "images/54.png"
+					@computerimages[0][1] = image "images/54.png"
+					@computerimages[0][2] = image "images/54.png"
+					@computerimages[0][3] = image "images/54.png"
+					@computerimages[0][4] = image "images/54.png"
 				end
 			end
 			stack(height: 150) do
@@ -130,16 +143,16 @@ Shoes.app(title: "Poker Game",
 					para "Bank:"
 					@computerbanks[1] = para "$1000"
 					para "     "
-					@computerranks[1] = para "rank"
+					@computerranks[1] = para "-----"
 
 				end	
 				flow(top:22, left:left_offset) do
 					@computerimages[1] = Array.new()
-					@computerimages[1][0] = image "images/#{game.players[2].hand[0]}.png"
-					@computerimages[1][1] = image "images/#{game.players[2].hand[1]}.png"
-					@computerimages[1][2] = image "images/#{game.players[2].hand[2]}.png"
-					@computerimages[1][3] = image "images/#{game.players[2].hand[3]}.png"
-					@computerimages[1][4] = image "images/#{game.players[2].hand[4]}.png"
+					@computerimages[1][0] = image "images/54.png"
+					@computerimages[1][1] = image "images/54.png"
+					@computerimages[1][2] = image "images/54.png"
+					@computerimages[1][3] = image "images/54.png"
+					@computerimages[1][4] = image "images/54.png"
 				end
 			end
 			stack(height: 150) do
@@ -150,16 +163,16 @@ Shoes.app(title: "Poker Game",
 					para "Bank:"
 					@computerbanks[2] = para "$1000"
 					para "     "
-					@computerranks[2] = para "rank"
+					@computerranks[2] = para "-----"
 
 				end	
 				flow(top:22, left:0) do
 					@computerimages[2] = Array.new()
-					@computerimages[2][0] = image "images/#{game.players[3].hand[0]}.png"
-					@computerimages[2][1] = image "images/#{game.players[3].hand[1]}.png"
-					@computerimages[2][2] = image "images/#{game.players[3].hand[2]}.png"
-					@computerimages[2][3] = image "images/#{game.players[3].hand[3]}.png"
-					@computerimages[2][4] = image "images/#{game.players[3].hand[4]}.png"
+					@computerimages[2][0] = image "images/54.png"
+					@computerimages[2][1] = image "images/54.png"
+					@computerimages[2][2] = image "images/54.png"
+					@computerimages[2][3] = image "images/54.png"
+					@computerimages[2][4] = image "images/54.png"
 				end
 			end
 			stack(height: 150) do
@@ -170,15 +183,15 @@ Shoes.app(title: "Poker Game",
 					para "Bank:"
 					@computerbanks[3] = para "$1000"
 					para "     "
-					@computerranks[3] = para "rank"	
+					@computerranks[3] = para "-----"	
 				end	
 				flow(top:22, left:left_offset) do
 					@computerimages[3] = Array.new()
-					@computerimages[3][0] = image "images/#{game.players[4].hand[0]}.png"
-					@computerimages[3][1] = image "images/#{game.players[4].hand[1]}.png"
-					@computerimages[3][2] = image "images/#{game.players[4].hand[2]}.png"
-					@computerimages[3][3] = image "images/#{game.players[4].hand[3]}.png"
-					@computerimages[3][4] = image "images/#{game.players[4].hand[4]}.png"
+					@computerimages[3][0] = image "images/54.png"
+					@computerimages[3][1] = image "images/54.png"
+					@computerimages[3][2] = image "images/54.png"
+					@computerimages[3][3] = image "images/54.png"
+					@computerimages[3][4] = image "images/54.png"
 				end
 			end
 		end

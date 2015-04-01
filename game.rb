@@ -10,7 +10,7 @@ HANDSIZE = 5
 class Game
 	#attribute accesors
 	attr_reader :players
-	
+	attr_reader :ranks	
 	def initialize(num_players)
 
 		#define deck range
