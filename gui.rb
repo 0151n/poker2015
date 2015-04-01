@@ -16,6 +16,18 @@ def show_all(images,ranks)
 		ranks[i].text =  $game.ranks[$game.players[i + 1].ranks[0]]
 	end	
 end
+def hide_all(images,ranks)
+	#images
+	for i in 0..3
+		for j in 0..4
+			images[i][j].path = "images/54.png"
+		end
+	end
+	#ranks
+	for i in 0..3
+		ranks[i].text =  "-----"
+	end	
+end
 Shoes.app(title: "Poker game",
    width: 800, height: 600, resizable: false) do
 	background "#FFF"
@@ -46,7 +58,7 @@ Shoes.app(title: "Poker game",
 					border("#0F0",strokewidth:2)
 					flow do
 						caption "Total Bets:"
-						@totalbets = caption "$100"
+						@totalbets = caption "$#{$game.sum_bets()}"
 					end		
 					flow do
 						caption "Round Winner:"
@@ -63,18 +75,20 @@ Shoes.app(title: "Poker game",
 							border("#0FF",strokewidth:2)
 							flow do
 								caption "Player Bet:"
-								@playerbet = caption "$20"
+								@playerbet = caption "$#{$game.players[0].bet}"
 							end
 							flow do
 								caption " add to bet: "
 								@bet_add = edit_line :width => 80
 							end
-							flow(margin:25) do
+							flow(margin:7) do
 								@call = button "call" do
 									show_all(@computerimages,@computerranks)
 								end
-								caption "  "
-								@fold = button "fold"
+								@fold = button "fold" do
+									hide_all(@computerimages,@computerranks)
+								end
+								@bet = button "bet"
 							end
 						end
 						stack(width:200) do

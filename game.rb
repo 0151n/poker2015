@@ -190,5 +190,12 @@ class Game
 			puts ("Player #{@players[@outcome].name} won")
 		end
 	end
+	def sum_bets() 
+		@sum = 0
+		for i in 0...@num_players
+			@sum += @players[i].bet
+		end
+		return @sum
+	end
 end
 
