@@ -11,6 +11,7 @@ class Game
 	#attribute accesors
 	attr_reader :players
 	attr_reader :ranks	
+	attr_reader :roundnum
 	def initialize(num_players)
 
 		#define deck range
@@ -53,7 +54,7 @@ class Game
 		@cards = (@deck_range).to_a
 		
 		#round count
-		@round = 0
+		@roundnum = 0
 
 		#!may not be needed!
 
@@ -90,7 +91,7 @@ class Game
 			@players[i].get_rank()
 			@used += @players[i].hand
 		end
-		@round += 1 
+		@roundnum += 1 
 	end
 
 	def compare_players(ex_group, resolution)	

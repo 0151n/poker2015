@@ -62,10 +62,10 @@ Shoes.app(title: "Poker game",
 					end		
 					flow do
 						caption "Round Winner:"
-						@winner = caption "Player"
+						@winner = caption "-----"
 						caption "      "
 						caption "round no."
-						@rounds = caption "10"
+						@rounds = caption $game.roundnum
 					end
 				end
 				stack(height:160) do
@@ -97,28 +97,28 @@ Shoes.app(title: "Poker game",
 								border("#FF0",strokewidth:2)
 								flow do
 									para "Computer 1 Bet:"
-									@computersbets[0] = para "$10"
+									@computersbets[0] = para "$#{$game.players[1].bet}"
 								end
 							end
 							stack(height:40) do
 								border("#FF0",strokewidth:2)
 								flow do
 									para "Computer 2 Bet:"
-									@computersbets[1] = para "$10"
+									@computersbets[1] = para "$#{$game.players[1].bet}"
 								end
 							end
 							stack(height:40) do
 								border("#FF0",strokewidth:2)
 								flow do
 									para "Computer 3 Bet:"
-									@computersbets[2] = para "$10"
+									@computersbets[2] = para "$#{$game.players[1].bet}"
 								end
 							end
 							stack(height:40) do
 								border("#FF0",strokewidth:2)
 								flow do
 									para "Computer 4 Bet:"
-									@computersbets[3] = para "$10"
+									@computersbets[3] = para "$#{$game.players[1].bet}"
 								end
 							end
 						end 
