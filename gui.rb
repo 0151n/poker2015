@@ -28,6 +28,14 @@ def hide_all(images,ranks)
 		ranks[i].text =  "-----"
 	end	
 end
+def reset_bets(bets,banks)
+	@playerbet.text = "$#{$game.players[0].bet}"
+	@playerbank.text = "$#{$game.players[0].bank}"
+	for i in 0..3
+		bets[i].text = "$#{$game.players[i + 1].bet}"
+		banks[i].text = "$#{$game.players[i + 1].bank}"
+	end
+end
 Shoes.app(title: "Poker game",
    width: 800, height: 600, resizable: false) do
 	background "#FFF"
@@ -40,7 +48,7 @@ Shoes.app(title: "Poker game",
 					subtitle "             "
 					flow(top: 12) do
 						caption "Bank:"
-						@playerbank = para "$1000", :top => 14
+						@playerbank = para "$#{$game.players[0].bank}", :top => 14
 					end
 					@playerrank = para $game.ranks[$game.players[0].ranks[0]]
 				end
@@ -88,7 +96,16 @@ Shoes.app(title: "Poker game",
 								@fold = button "fold" do
 									hide_all(@computerimages,@computerranks)
 								end
-								@bet = button "bet"
+								@bet = button "bet" do
+									if @bet_add.text != "" and @bet_add.text.to_i > 0 and @bet_add.text.to_i <= $game.players[0].bank then
+										$game.players[0].set_bet(@bet_add.text.to_i)
+										#$game.get_bets()
+										reset_bets(@computersbets,@computerbanks)
+									end	
+								end
+							end
+							flow(margin:0) do
+								@next = button "next round"
 							end
 						end
 						stack(width:200) do
@@ -136,7 +153,7 @@ Shoes.app(title: "Poker game",
 					para "Computer 1", :align => left
 					para "             "
 					para "Bank:"
-					@computerbanks[0] = para "$1000"
+					@computerbanks[0] = para "$#{$game.players[1].bank}"
 					para "     "
 					@computerranks[0] = para "-----"
 				end	
@@ -155,7 +172,7 @@ Shoes.app(title: "Poker game",
 					para "Computer 2", :align => left
 					para "             "
 					para "Bank:"
-					@computerbanks[1] = para "$1000"
+					@computerbanks[1] = para "$#{$game.players[2].bank}"
 					para "     "
 					@computerranks[1] = para "-----"
 
@@ -175,7 +192,7 @@ Shoes.app(title: "Poker game",
 					para "Computer 3", :align => left
 					para "             "
 					para "Bank:"
-					@computerbanks[2] = para "$1000"
+					@computerbanks[2] = para "$#{$game.players[3].bank}"
 					para "     "
 					@computerranks[2] = para "-----"
 
@@ -195,7 +212,7 @@ Shoes.app(title: "Poker game",
 					para "Computer 4", :align => left
 					para "             "
 					para "Bank:"
-					@computerbanks[3] = para "$1000"
+					@computerbanks[3] = para "$#{$game.players[4].bank}"
 					para "     "
 					@computerranks[3] = para "-----"	
 				end	

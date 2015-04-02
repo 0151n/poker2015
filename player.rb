@@ -149,4 +149,8 @@ class Player
 	def set_hand(in_hand)
 		@hand = in_hand
 	end
+	def set_bet(bet)
+		@bet += bet
+		@bank -= bet
+	end
 end
