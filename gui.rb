@@ -1,40 +1,55 @@
 load 'game.rb'
+#local variables
 left_offset = 2
+called = false
+folded = false
 
 $game = Game.new(5)
 $game.round()
 playerimage_paths = $game.players[0].hand[0..4]
-def show_all(images,ranks)
+def show_all()
 	#images
 	for i in 0..3
 		for j in 0..4
-			images[i][j].path = "images/#{$game.players[i + 1].hand[j]}.png"
+			@computerimages[i][j].path = "images/#{$game.players[i + 1].hand[j]}.png"
 		end
 	end
 	#ranks
 	for i in 0..3
-		ranks[i].text =  $game.ranks[$game.players[i + 1].ranks[0]]
+		@computerranks[i].text =  $game.ranks[$game.players[i + 1].ranks[0]]
 	end	
 end
-def hide_all(images,ranks)
+def hide_all()
 	#images
 	for i in 0..3
 		for j in 0..4
-			images[i][j].path = "images/54.png"
+			@computerimages[i][j].path = "images/54.png"
 		end
 	end
 	#ranks
 	for i in 0..3
-		ranks[i].text =  "-----"
+		@computerranks[i].text =  "-----"
 	end	
 end
-def reset_bets(bets,banks)
+def reset_bets()
 	@playerbet.text = "$#{$game.players[0].bet}"
 	@playerbank.text = "$#{$game.players[0].bank}"
+	@totalbets.text = "$#{$game.sum_bets()}"
 	for i in 0..3
-		bets[i].text = "$#{$game.players[i + 1].bet}"
-		banks[i].text = "$#{$game.players[i + 1].bank}"
+		@computersbets[i].text = "$#{$game.players[i + 1].bet}"
+		@computerbanks[i].text = "$#{$game.players[i + 1].bank}"
 	end
+end
+def reset_all()
+	puts "run"
+	@totalbets.text = "$0"
+	for i in 0..4
+		@playerimages[i].path = "images/#{$game.players[0].hand[i]}.png" 
+	end
+	@playerrank.text =  $game.ranks[$game.players[0].ranks[0]]
+	@winner.text = "-----"
+	@rounds.text = $game.roundnum
+	puts "done"
 end
 Shoes.app(title: "Poker game",
    width: 800, height: 600, resizable: false) do
@@ -91,21 +106,52 @@ Shoes.app(title: "Poker game",
 							end
 							flow(margin:7) do
 								@call = button "call" do
-									show_all(@computerimages,@computerranks)
+									if !called then
+										show_all()
+										@outcome = $game.compare_players(Array.new(5,true),0)
+										if @outcome == -1 then
+											@winner.text = "Game was a Tie"
+											#add functionality for tie
+										else
+											@winner.text = $game.players[@outcome].name
+											$game.players[@outcome].set_bank($game.sum_bets())
+											reset_bets()
+										end
+										called = true
+									end
 								end
 								@fold = button "fold" do
-									hide_all(@computerimages,@computerranks)
+									if !folded then
+										show_all()
+										$game.players[0].fold
+										@outcome = $game.compare_players(Array.new(5,true),0)
+										if @outcome == -1 then
+											@winner.text = "Game was a Tie"
+											#add functionality for tie
+										else
+											@winner.text = $game.players[@outcome].name
+											$game.players[@outcome].set_bank($game.sum_bets())
+											reset_bets()
+										end
+										folded = true
+									end
 								end
 								@bet = button "bet" do
-									if @bet_add.text != "" and @bet_add.text.to_i > 0 and @bet_add.text.to_i <= $game.players[0].bank then
+									if @bet_add.text != "" and @bet_add.text.to_i > 0 and @bet_add.text.to_i <= $game.players[0].bank and !called and !folded then
+										$game.get_bets(@bet_add.text.to_i)
 										$game.players[0].set_bet(@bet_add.text.to_i)
-										#$game.get_bets()
-										reset_bets(@computersbets,@computerbanks)
+										reset_bets()
 									end	
 								end
 							end
 							flow(margin:0) do
-								@next = button "next round"
+								#next round
+								@next = button "next round" do
+									$game.round()
+									reset_all()
+									hide_all()
+									called = folded = false
+								end
 							end
 						end
 						stack(width:200) do

@@ -87,13 +87,13 @@ class Game
 	def round()
 		@used = []
 		for i in 0...@num_players
+			@players[i].reset()
 			@players[i].populate(@used,52,5)
 			@players[i].get_rank()
 			@used += @players[i].hand
 		end
 		@roundnum += 1 
 	end
-
 	def compare_players(ex_group, resolution)	
 		#rank arrays
 		@f_ranks= []
@@ -197,6 +197,17 @@ class Game
 			@sum += @players[i].bet
 		end
 		return @sum
+	end
+	#placeholder get_bets function
+	def get_bets(bet)
+		for i in 1...@num_players
+			if bet <= @players[i].bank and !@players[i].folded then
+				@players[i].set_bet(bet)
+			else
+				puts "fold #{i}"
+				@players[i].fold
+			end 
+		end
 	end
 end
 

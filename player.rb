@@ -153,4 +153,18 @@ class Player
 		@bet += bet
 		@bank -= bet
 	end
+	def set_bank(bank)
+		@bank += bank
+	end
+	def reset
+		#initialize varaibles
+		@hand = []	
+		@subranks = []
+		@ranks = []
+		@folded = false
+		@bet = 0
+	end
+	def fold
+		@folded = true
+	end
 end
