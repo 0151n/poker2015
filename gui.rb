@@ -1,6 +1,6 @@
 load 'game.rb'
 #local variables
-left_offset = 2
+left_offset = 5
 called = false
 folded = false
 
@@ -41,7 +41,6 @@ def reset_bets()
 	end
 end
 def reset_all()
-	puts "run"
 	@totalbets.text = "$0"
 	for i in 0..4
 		@playerimages[i].path = "images/#{$game.players[0].hand[i]}.png" 
@@ -49,15 +48,14 @@ def reset_all()
 	@playerrank.text =  $game.ranks[$game.players[0].ranks[0]]
 	@winner.text = "-----"
 	@rounds.text = $game.roundnum
-	puts "done"
 end
 Shoes.app(title: "Poker game",
-   width: 800, height: 600, resizable: false) do
+   width: 810, height: 600, resizable: false) do
 	background "#FFF"
 	flow do
-		stack(width: 400) do
+		stack(width: 405) do
 			stack(height:300) do
-				border("#00F",strokewidth:2)
+				border("#000",strokewidth:2)
 				flow do
 					subtitle "Player", :align => left
 					subtitle "             "
@@ -67,7 +65,7 @@ Shoes.app(title: "Poker game",
 					end
 					@playerrank = para $game.ranks[$game.players[0].ranks[0]]
 				end
-				flow(top:80, left:3) do
+				flow(top:80, left:5) do
 					@playerimages = Array.new()	
 					@playerimages[0] = image "images/#{$game.players[0].hand[0]}.png" 
 					@playerimages[1] = image "images/#{$game.players[0].hand[1]}.png"
@@ -77,8 +75,8 @@ Shoes.app(title: "Poker game",
 				end
 			end
 			stack(height:300) do
-				stack(height:140) do
-					border("#0F0",strokewidth:2)
+				stack(height:150) do
+					border("#000",strokewidth:2)
 					flow do
 						caption "Total Bets:"
 						@totalbets = caption "$#{$game.sum_bets()}"
@@ -91,11 +89,10 @@ Shoes.app(title: "Poker game",
 						@rounds = caption $game.roundnum
 					end
 				end
-				stack(height:160) do
-					border("#0FF",strokewidth:2)
+				stack(height:150) do
+					border("#000",strokewidth:2)
 					flow do
 						stack(width:200) do
-							border("#0FF",strokewidth:2)
 							flow do
 								caption "Player Bet:"
 								@playerbet = caption "$#{$game.players[0].bet}"
@@ -118,6 +115,7 @@ Shoes.app(title: "Poker game",
 											reset_bets()
 										end
 										called = true
+										@fnext.toggle()
 									end
 								end
 								@fold = button "fold" do
@@ -144,41 +142,43 @@ Shoes.app(title: "Poker game",
 									end	
 								end
 							end
-							flow(margin:0) do
+							@fnext = flow :hidden => true, :margin_left => 43 do
 								#next round
 								@next = button "next round" do
 									$game.round()
 									reset_all()
 									hide_all()
 									called = folded = false
+									@fnext.toggle()
 								end
 							end
 						end
-						stack(width:200) do
+						stack(width:205) do	
+							border("#000",strokewidth:2)
 							@computersbets = Array.new()
 							stack(height:40) do
-								border("#FF0",strokewidth:2)
+								border("#000",strokewidth:2)
 								flow do
 									para "Computer 1 Bet:"
 									@computersbets[0] = para "$#{$game.players[1].bet}"
 								end
 							end
 							stack(height:40) do
-								border("#FF0",strokewidth:2)
+								border("#000",strokewidth:2)
 								flow do
 									para "Computer 2 Bet:"
 									@computersbets[1] = para "$#{$game.players[1].bet}"
 								end
 							end
 							stack(height:40) do
-								border("#FF0",strokewidth:2)
+								border("#000",strokewidth:2)
 								flow do
 									para "Computer 3 Bet:"
 									@computersbets[2] = para "$#{$game.players[1].bet}"
 								end
 							end
 							stack(height:40) do
-								border("#FF0",strokewidth:2)
+								border("#000",strokewidth:2)
 								flow do
 									para "Computer 4 Bet:"
 									@computersbets[3] = para "$#{$game.players[1].bet}"
@@ -189,12 +189,12 @@ Shoes.app(title: "Poker game",
 				end	
 			end
 		end
-		stack(width: 400) do
+		stack(width: 405) do
 			@computerimages = Array.new()
 			@computerbanks = Array.new()
 			@computerranks = Array.new()
 			stack(height: 150) do
-				border("#F00",strokewidth:1)
+				border("#000",strokewidth:2)
 				flow(left: 100) do
 					para "Computer 1", :align => left
 					para "             "
@@ -213,7 +213,7 @@ Shoes.app(title: "Poker game",
 				end
 			end
 			stack(height: 150) do
-				border("#F00",strokewidth:1)
+				border("#000",strokewidth:2)
 				flow(left: 100) do
 					para "Computer 2", :align => left
 					para "             "
@@ -233,7 +233,7 @@ Shoes.app(title: "Poker game",
 				end
 			end
 			stack(height: 150) do
-				border("#F00",strokewidth:1)
+				border("#000",strokewidth:2)
 				flow(left: 100) do
 					para "Computer 3", :align => left
 					para "             "
@@ -243,7 +243,7 @@ Shoes.app(title: "Poker game",
 					@computerranks[2] = para "-----"
 
 				end	
-				flow(top:22, left:0) do
+				flow(top:22, left:left_offset) do
 					@computerimages[2] = Array.new()
 					@computerimages[2][0] = image "images/54.png"
 					@computerimages[2][1] = image "images/54.png"
@@ -253,7 +253,7 @@ Shoes.app(title: "Poker game",
 				end
 			end
 			stack(height: 150) do
-				border("#F00",strokewidth:1)
+				border("#000",strokewidth:2)
 				flow(left: 100) do
 					para "Computer 4", :align => left
 					para "             "
