@@ -204,7 +204,7 @@ class Game
 			if bet <= @players[i].bank and !@players[i].folded then
 				@players[i].set_bet(bet)
 			else
-				puts "fold #{i}"
+				#puts "fold #{i}"
 				@players[i].fold
 			end 
 		end

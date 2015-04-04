@@ -38,7 +38,11 @@ def reset_bets()
 	for i in 0..3
 		@computersbets[i].text = "$#{$game.players[i + 1].bet}"
 		@computerbanks[i].text = "$#{$game.players[i + 1].bank}"
+		if $game.players[i + 1].folded then	
+			@fflag[i].text = "    FOLDED"
+		end
 	end
+	
 end
 def reset_all()
 	@totalbets.text = "$0"
@@ -48,6 +52,10 @@ def reset_all()
 	@playerrank.text =  $game.ranks[$game.players[0].ranks[0]]
 	@winner.text = "-----"
 	@rounds.text = $game.roundnum
+	for i in 0..3
+		@fflag[i].text = ""
+	end
+
 end
 Shoes.app(title: "Poker game",
    width: 810, height: 600, resizable: false) do
@@ -148,6 +156,7 @@ Shoes.app(title: "Poker game",
 									$game.round()
 									reset_all()
 									hide_all()
+									reset_bets()
 									called = folded = false
 									@fnext.toggle()
 								end
@@ -193,6 +202,7 @@ Shoes.app(title: "Poker game",
 			@computerimages = Array.new()
 			@computerbanks = Array.new()
 			@computerranks = Array.new()
+			@fflag = Array.new()
 			stack(height: 150) do
 				border("#000",strokewidth:2)
 				flow(left: 100) do
@@ -202,6 +212,7 @@ Shoes.app(title: "Poker game",
 					@computerbanks[0] = para "$#{$game.players[1].bank}"
 					para "     "
 					@computerranks[0] = para "-----"
+					@fflag[0] = para "", :stroke => "#F00"
 				end	
 				flow(top:22, left:left_offset) do
 					@computerimages[0] = Array.new()
@@ -221,6 +232,7 @@ Shoes.app(title: "Poker game",
 					@computerbanks[1] = para "$#{$game.players[2].bank}"
 					para "     "
 					@computerranks[1] = para "-----"
+					@fflag[1] = para "", :stroke => "#F00"
 
 				end	
 				flow(top:22, left:left_offset) do
@@ -241,7 +253,7 @@ Shoes.app(title: "Poker game",
 					@computerbanks[2] = para "$#{$game.players[3].bank}"
 					para "     "
 					@computerranks[2] = para "-----"
-
+					@fflag[2] = para "", :stroke => "#F00"
 				end	
 				flow(top:22, left:left_offset) do
 					@computerimages[2] = Array.new()
@@ -261,6 +273,7 @@ Shoes.app(title: "Poker game",
 					@computerbanks[3] = para "$#{$game.players[4].bank}"
 					para "     "
 					@computerranks[3] = para "-----"	
+					@fflag[3] = para "", :stroke => "#F00"
 				end	
 				flow(top:22, left:left_offset) do
 					@computerimages[3] = Array.new()
