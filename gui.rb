@@ -1,12 +1,18 @@
 load 'game.rb'
 #local variables
 left_offset = 5
+#if player has clicked certain buttons
 called = false
 folded = false
 
+#create new game
 $game = Game.new(5)
+#run initial round
 $game.round()
+#initialize player hand images
 playerimage_paths = $game.players[0].hand[0..4]
+
+#show ai player's hands and ranks
 def show_all()
 	#images
 	for i in 0..3
@@ -19,6 +25,8 @@ def show_all()
 		@computerranks[i].text =  $game.ranks[$game.players[i + 1].ranks[0]]
 	end	
 end
+
+#hide ai player's hands and ranks
 def hide_all()
 	#images
 	for i in 0..3
@@ -31,6 +39,8 @@ def hide_all()
 		@computerranks[i].text =  "-----"
 	end	
 end
+
+#reset all gui elements in relation to betting
 def reset_bets()
 	@playerbet.text = "$#{$game.players[0].bet}"
 	@playerbank.text = "$#{$game.players[0].bank}"
@@ -44,6 +54,7 @@ def reset_bets()
 	end
 	
 end
+#reset all elements not included in above function
 def reset_all()
 	@totalbets.text = "$0"
 	for i in 0..4
@@ -57,11 +68,15 @@ def reset_all()
 	end
 
 end
+#start gui
 Shoes.app(title: "Poker game",
    width: 810, height: 600, resizable: false) do
 	background "#FFF"
+	#main flow
 	flow do
+		#left stact
 		stack(width: 405) do
+			#player box
 			stack(height:300) do
 				border("#000",strokewidth:2)
 				flow do
@@ -83,6 +98,7 @@ Shoes.app(title: "Poker game",
 				end
 			end
 			stack(height:300) do
+				#info box
 				stack(height:150) do
 					border("#000",strokewidth:2)
 					flow do
@@ -98,6 +114,7 @@ Shoes.app(title: "Poker game",
 					end
 				end
 				stack(height:150) do
+					#player dialog box
 					border("#000",strokewidth:2)
 					flow do
 						stack(width:200) do
@@ -162,7 +179,8 @@ Shoes.app(title: "Poker game",
 								end
 							end
 						end
-						stack(width:205) do	
+						stack(width:205) do
+							#computer bet box	
 							border("#000",strokewidth:2)
 							@computersbets = Array.new()
 							stack(height:40) do
@@ -199,10 +217,13 @@ Shoes.app(title: "Poker game",
 			end
 		end
 		stack(width: 405) do
+			#computer hands box
+			#initialize arrays
 			@computerimages = Array.new()
 			@computerbanks = Array.new()
 			@computerranks = Array.new()
 			@fflag = Array.new()
+			#computer 1
 			stack(height: 150) do
 				border("#000",strokewidth:2)
 				flow(left: 100) do
@@ -223,6 +244,7 @@ Shoes.app(title: "Poker game",
 					@computerimages[0][4] = image "images/54.png"
 				end
 			end
+			#computer 2
 			stack(height: 150) do
 				border("#000",strokewidth:2)
 				flow(left: 100) do
@@ -244,6 +266,7 @@ Shoes.app(title: "Poker game",
 					@computerimages[1][4] = image "images/54.png"
 				end
 			end
+			#computer 3
 			stack(height: 150) do
 				border("#000",strokewidth:2)
 				flow(left: 100) do
@@ -264,6 +287,7 @@ Shoes.app(title: "Poker game",
 					@computerimages[2][4] = image "images/54.png"
 				end
 			end
+			#computer 4
 			stack(height: 150) do
 				border("#000",strokewidth:2)
 				flow(left: 100) do
@@ -287,4 +311,3 @@ Shoes.app(title: "Poker game",
 		end
 	end
 end
- 
