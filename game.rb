@@ -202,7 +202,15 @@ class Game
 	def get_bets(bet)
 		for i in 1...@num_players
 			if bet <= @players[i].bank and !@players[i].folded then
-				@players[i].set_bet(bet)
+				if @players[i].ranks[0] < 8 or rand(0..1) == 1 then
+					@players[i].set_bet(bet)
+				elsif (@players[i].ranks[0] == 8) or rand(0..1) == 1 then
+					@players[i].set_bet(bet)
+				elsif rand(0...10) == 1 then
+					@players[i].set_bet(bet)
+				else
+					@players[i].fold
+				end
 			else
 				#puts "fold #{i}"
 				@players[i].fold
